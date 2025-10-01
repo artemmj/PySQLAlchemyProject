@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey, Text, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from database import Base
+from dao.database import Base
 from models.enums import RatingEnum
 
 

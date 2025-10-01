@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey, Text, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from database import Base, array_or_none_field
+from dao.database import Base, array_or_none_field
 from models.enums import StatusPostEnum
 # from .user import User
 

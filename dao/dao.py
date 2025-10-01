@@ -5,7 +5,7 @@ from dao.base import BaseDAO
 from models import User, Profile, Post, Comment
 
 
-class UserDAO(BaseDAO):
+class UserDAO(BaseDAO[User]):
     model = User
 
     @classmethod
@@ -85,14 +85,21 @@ class UserDAO(BaseDAO):
         user_info = result.scalar_one_or_none()
         return user_info
 
+    @classmethod
+    async def update_username_age_by_id(cls, session: AsyncSession, data_id: int, username: str, age: int):
+        user = await session.get(cls.model, data_id)
+        user.username = username
+        user.profile.age = age
+        await session.flush()
 
-class ProfileDAO(BaseDAO):
+
+class ProfileDAO(BaseDAO[Profile]):
     model = Profile
 
 
-class PostDAO(BaseDAO):
+class PostDAO(BaseDAO[Post]):
     model = Post
 
 
-class CommentDAO(BaseDAO):
+class CommentDAO(BaseDAO[Comment]):
     model = Comment

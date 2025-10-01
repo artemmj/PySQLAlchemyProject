@@ -2,12 +2,12 @@ from asyncio import run
 from typing import List
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import db_connection
+from dao.database import db_connection
 from dao.dao import UserDAO
 from models.enums import GenderEnum, ProfessionEnum
 
 
-@db_connection
+@db_connection()
 async def add_one(user_data: dict, session: AsyncSession):
     new_user = await UserDAO.add(session=session, **user_data)
     print(f"Добавлен новый пользователь с ID: {new_user.id}")
@@ -17,7 +17,7 @@ async def add_one(user_data: dict, session: AsyncSession):
 # run(add_one(user_data=one_user))
 
 
-@db_connection
+@db_connection()
 async def add_many_users(users_data: List[dict], session: AsyncSession):
     new_users = await UserDAO.add_many(session=session, instances=users_data)
     user_ilds_list = [user.id for user in new_users]
@@ -39,7 +39,7 @@ users = [
 # run(add_many_users(users_data=users))
 
 
-@db_connection
+@db_connection()
 async def add_full_user(user_data: dict, session: AsyncSession):
     new_user = await UserDAO.add_user_with_profile(session=session, user_data=user_data)
     print(f"Добавлен новый пользователь с ID: {new_user.id}")

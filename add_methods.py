@@ -2,12 +2,12 @@ from asyncio import run
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import db_connection
+from dao.database import db_connection
 from models import User, Profile
 from models.enums import GenderEnum, ProfessionEnum
 
 
-@db_connection
+@db_connection()
 async def create_user_example_1(username: str, email: str, password: str, session: AsyncSession) -> int:
     """
     Создает нового пользователя с использованием ORM SQLAlchemy.
@@ -28,7 +28,7 @@ async def create_user_example_1(username: str, email: str, password: str, sessio
     return user.id
 
 
-@db_connection
+@db_connection()
 async def get_user_by_id_example_2(
     username: str, email: str, password: str,
     first_name: str,
@@ -61,7 +61,7 @@ async def get_user_by_id_example_2(
     return {'user_id': user.id, 'profile_id': profile.id}
 
 
-@db_connection
+@db_connection()
 async def get_user_by_id_example_3(
     username: str, email: str, password: str,
     first_name: str,
@@ -115,7 +115,7 @@ async def get_user_by_id_example_3(
 # ))
 
 
-@db_connection
+@db_connection()
 async def create_user_example_4(users_data: list[dict], session: AsyncSession) -> list[int]:
     """
     Создает нескольких пользователей с использованием ORM SQLAlchemy.
