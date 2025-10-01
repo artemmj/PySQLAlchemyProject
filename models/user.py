@@ -13,7 +13,7 @@ class User(Base):
         "Profile",
         back_populates="user",
         uselist=False,  # Обеспечивает связь один-к-одному
-        lazy="joined"  # Автоматически загружает связанные данные из Profile при запросе User
+        lazy="joined"   # Автоматически загружает связанные данные из Profile при запросе User
     )
 
     # Связь один-ко-многим с Post

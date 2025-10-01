@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from dao.base import BaseDAO
@@ -45,6 +46,44 @@ class UserDAO(BaseDAO):
         await session.commit()
 
         return user  # Возвращаем объект пользователя
+
+    @classmethod
+    async def get_all_users(cls, session: AsyncSession):
+        # Создаем запрос для выборки всех пользователей
+        query = select(cls.model)
+
+        # Выполняем запрос и получаем результат
+        result = await session.execute(query)
+
+        # scalars() используется, когда мы ожидаем получить одну колонку результата
+        # scalar() используется, когда мы ожидаем одну запись и одно поле
+        # all() возвращает список всех записей, которые удовлетворяют нашему запросу
+        # first() возвращает только первую запись из результатов запроса
+        # scalar_one() — возвращает одно значение. Если запрос вернет более одной строки, произойдет ошибка
+        # scalar_one_or_none() — вернет либо одно значение, либо None, если записей не найдено
+
+        # Извлекаем записи как объекты модели
+        records = result.scalars().all()
+
+        # Возвращаем список всех пользователей
+        return records
+
+    @classmethod
+    async def get_id_username(cls, session: AsyncSession):
+        # Создаем запрос для выборки id и username всех пользователей
+        query = select(cls.model.id, cls.model.username)  # Указываем конкретные колонки
+        print(query)                                      # Выводим запрос для отладки
+        result = await session.execute(query)             # Выполняем асинхронный запрос
+        records = result.all()                            # Получаем все результаты
+        return records                                    # Возвращаем список записей
+
+    @classmethod
+    async def get_user_info(cls, session: AsyncSession, user_id: int):
+        query = select(cls.model).filter_by(id=user_id)
+        # query = select(cls.model).filter(cls.model.id == user_id)
+        result = await session.execute(query)
+        user_info = result.scalar_one_or_none()
+        return user_info
 
 
 class ProfileDAO(BaseDAO):
